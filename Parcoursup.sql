@@ -6,22 +6,22 @@ set schema 'parcoursup';
 
 
 ------Tables
-drop Table if EXISTS Academie;
-CREATE TABLE Academie(
+drop Table if EXISTS _academie;
+CREATE TABLE _academie(
     academie_nom VARCHAR(20) PRIMARY KEY;
 );
 
 
-drop TABLE if EXISTS Etablissement;
-CREATE TABLE Etablissement(
+drop TABLE if EXISTS _etablissement;
+CREATE TABLE _etablissement(
     etablissement_code_uai VARCHAR(20) PRIMARY KEY,
     etablissement_nom VARCHAR(20) NOT NULL,
     etablissement_statut VARCHAR(50) Not NULL;
 );
 
 
-drop TABLE if EXISTS Filiere;
-CREATE TABLE Filiere(
+drop TABLE if EXISTS _filiere;
+CREATE TABLE _filiere(
     filiere_id INT PRIMARY KEY,
     filiere_libelle VARCHAR(20) NOT NULL,
     filiere_libelle_tres_abrege VARCHAR(20) NOT NULL,
@@ -30,29 +30,29 @@ CREATE TABLE Filiere(
 );
 
 
-DROP TABLE if EXISTS Region;
-CREATE TABLE Region(
+DROP TABLE if EXISTS _region;
+CREATE TABLE _region(
     region_nom VARCHAR(20) PRIMARY KEY;
 );
 
 
-DROP TABLE if EXISTS Departement;
-CREATE TABLE Departement(
+DROP TABLE if EXISTS _departement;
+CREATE TABLE _departement(
     departement_code VARCHAR(20) PRIMARY KEY,
     departement_nom VARCHAR(20),
     region_nom VARCHAR(20) REFERENCES Region.region_nom;
 );
 
 
-DROP TABLE if EXISTS Commune;
-CREATE TABLE Commune(
+DROP TABLE if EXISTS _commune;
+CREATE TABLE _commune(
     commune_nom VARCHAR(20) PRIMARY KEY,
     departement_code VARCHAR(20) REFERENCES Departement.departement_code;
 );
 
 
-Drop TABLE if EXISTS Formation;
-CREATE TABLE Formation(
+Drop TABLE if EXISTS _formation;
+CREATE TABLE _formation(
     cod_aff_form VARCHAR(20) PRIMARY KEY,
     filiere_libelle_detaille VARCHAR(20),
     coordonnees_gps VARCHAR(20),
@@ -66,52 +66,52 @@ CREATE TABLE Formation(
     commune_nom VARCHAR(20) REFERENCES Commune.commune_nom;
 );
 
-drop table if exists Session;
-CREATE TABLE Session{
+drop table if exists _session;
+CREATE TABLE _session{
     session_annee INT,
     primary key(session_annee)
 };
-drop table if exists Regroupement;
-CREATE TABLE Regroupement{
-    libelle_regroupement VARCHAR NOT NULL,
+drop table if exists _regroupement;
+CREATE TABLE _regroupement{
+    libelle_regroupement VARCHAR(20) NOT NULL,
     primary key(libelle_regroupement)
 };
-drop table if exists Type_bac;
-CREATE TABLE Type_bac{
-    type_bac VARCHAR NOT NULL,
+drop table if exists _type_bac;
+CREATE TABLE _type_bac{
+    type_bac VARCHAR(20) NOT NULL,
     primary key(type_bac)
 };
-drop table if exists Mention_bac;
-CREATE TABLE Mention_bac{
-    libelle_mention VARCHAR NOT NULL,
+drop table if exists _mention_bac;
+CREATE TABLE _mention_bac{
+    libelle_mention VARCHAR(20) NOT NULL,
     primary key(libelle_mention)
 };
 
-drop table if exists Admissions_generalites;
-create table Admissions_generalites{
-    selectivite VARCHAR NOT NULL,
+drop table if exists admissions_generalites;
+create table admissions_generalites{
+    selectivite VARCHAR(20) NOT NULL,
     capacite INT,
     effectif_total_candidats INT,
     effectif_total_candidates INT,
-    cod_aff_form VARCHAR NOT NULL REFERENCES Formation(cod_aff_form),
+    cod_aff_form VARCHARv NOT NULL REFERENCES Formation(cod_aff_form),
     session_annee INT REFERENCES Session(session_annee),
     primary key(cod_aff_form, session_annee)
 };-- comen hair
 
-drop table if exists Admissions_selon_type_neo_bac;
-create table Admissions_selon_type_neo_bac{
+drop table if exists admissions_selon_type_neo_bac;
+create table admissions_selon_type_neo_bac{
     effectif_candidat_neo_bac_classes INT,
-    cod_aff_form VARCHAR NOT NULL REFERENCES Formation(cod_aff_form),
+    cod_aff_form VARCHAR(20) NOT NULL REFERENCES Formation(cod_aff_form),
     session_annee INT REFERENCES Session(session_annee),
-    type_bac VARCHAR NOT NULL REFERENCES Type_bac(type_bac),
+    type_bac VARCHAR(20) NOT NULL REFERENCES Type_bac(type_bac),
     primary key(cod_aff_form, session_annee, type_bac)
 };
 
 drop table if exists rang_dernier_appele_selon_regroupement;
 create table rang_dernier_appele_selon_regroupement{
     rang_dernier_appele INT;
-    cod_aff_form VARCHAR NOT NULL REFERENCES Formation(cod_aff_form),
-    libelle_regroupement VARCHAR NOT NULL REFERENCES Regroupement(libelle_regroupement),
+    cod_aff_form VARCHAR(20) NOT NULL REFERENCES Formation(cod_aff_form),
+    libelle_regroupement VARCHARv NOT NULL REFERENCES Regroupement(libelle_regroupement),
     session_annee INT REFERENCES Session(session_annee),
     primary key(cod_aff_form, libelle_regroupement, session_annee)
 };
@@ -119,8 +119,8 @@ create table rang_dernier_appele_selon_regroupement{
 drop table if exists effectif_selon_mention;
 create table effectif_selon_mention{
     effectif_admis_neo_bac_selon_mention INT,
-    cod_aff_form VARCHAR NOT NULL REFERENCES Formation(cod_aff_form),
-    libelle_mention VARCHAR NOT NULL REFERENCES Mention_bac(libelle_mention),
+    cod_aff_form VARCHAR(20) NOT NULL REFERENCES Formation(cod_aff_form),
+    libelle_mention VARCHAR(20) NOT NULL REFERENCES Mention_bac(libelle_mention),
     session_annee INT REFERENCES Session(session_annee),
     primary key(cod_aff_form, libelle_mention, session_annee)
 };
