@@ -89,7 +89,7 @@ CREATE TABLE _mention_bac(
 
 drop table if exists admissions_generalites;
 create table admissions_generalites(
-    selectivite VARCHAR(20) NOT NULL,
+    selectivite VARCHAR(30) NOT NULL,
     capacite INT,
     effectif_total_candidats INT,
     effectif_total_candidates INT,
@@ -111,7 +111,7 @@ drop table if exists rang_dernier_appele_selon_regroupement;
 create table rang_dernier_appele_selon_regroupement(
     rang_dernier_appele INT,
     cod_aff_form VARCHAR(20) NOT NULL REFERENCES _Formation(cod_aff_form),
-    libelle_regroupement VARCHAR NOT NULL REFERENCES _Regroupement(libelle_regroupement),
+    libelle_regroupement VARCHAR(30) NOT NULL REFERENCES _Regroupement(libelle_regroupement),
     session_annee INT REFERENCES _Session(session_annee),
     primary key(cod_aff_form, libelle_regroupement, session_annee)
 );
