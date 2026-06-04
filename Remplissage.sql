@@ -1,0 +1,44 @@
+insert into _academie(academie_nom)
+select academie_nom from stockage;
+
+insert into _region(region_nom)
+select region_nom from stockage;
+
+insert into _departement(departement_code,departement_nom,region_nom)
+select departement_code,departement_nom,region_nom from stockage;
+
+insert into _commune(commune_nom,departement_code)
+select commune_nom,departement_code from stockage;
+
+insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
+select etablissement_code_uai,etablissement_nom,etablissement_statut from stockage;
+
+insert into _filiere(filiere_id,filiere_libelle,filiere_libelle_tres_abrege,filiere_libelle_abrege,filiere_libelle_detaille_bis)
+select filiere_id,filiere_libelle,filiere_libelle_tres_abrege,filiere_libelle_abrege,filiere_libelle_detaille_bis from stockage;
+
+insert into _regroupement(libelle_regroupement)
+select libelle_regroupement from stockage;
+
+insert into _session(session_annee)
+select session from stockage;
+
+insert into _mention_bac(libelle_mention)
+select libelle_mention from stockage;
+
+insert into _type_bac(type_bac)
+select type_bac from stockage;
+
+insert into _formation(cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,filiere_id,etablissement_code_uai,commune_nom)
+select cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,filiere_id,etablissement_code_uai,commune_nom from stockage;
+
+insert into admissions_generalites(selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee)
+select selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee from stockage;
+
+insert into admissions_selon_type_neo_bac(effectif_candidat_neo_bac_classes,cod_aff_form,session_annee,type_bac)
+select effectif_candidat_neo_bac_classes,cod_aff_form,session_annee,type_bac from stockage;
+
+insert into effectif_selon_mention(effectif_admis_neo_bac_selon_mention,cod_aff_form,libelle_mention,session_annee)
+select effectif_admis_neo_bac_selon_mention,cod_aff_form,libelle_mention,session_annee from stockage;
+
+insert into _type_bac(type_bac)
+select type_bac from stockage;

@@ -60,7 +60,5 @@ create table stockage(
   tri varchar(20),
   cod_aff_form int,
   concours_communs_banques_epreuves varchar(50),
-  url_formation varchar(100),
-  Constraint stockage_pk Primary key (session,Code_UAI_etablissement)
- );
+  url_formation varchar(100));
 
