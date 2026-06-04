@@ -40,5 +40,5 @@ select effectif_candidat_neo_bac_classes,cod_aff_form,session_annee,type_bac fro
 insert into effectif_selon_mention(effectif_admis_neo_bac_selon_mention,cod_aff_form,libelle_mention,session_annee)
 select effectif_admis_neo_bac_selon_mention,cod_aff_form,libelle_mention,session_annee from stockage;
 
-insert into _type_bac(type_bac)
-select type_bac from stockage;
+insert into rang_dernier_appele_selon_regroupement(rang_dernier_appele,cod_aff_form,libelle_regroupement,session_annee)
+select rang_dernier_appele,cod_aff_form,libelle_regroupement,session_annee from stockage;
