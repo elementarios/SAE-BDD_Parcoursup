@@ -1,8 +1,6 @@
-set schema 'parcoursup';
-
 Drop table if exists stockage;
 create table stockage(
-  Session int ,
+  Session int,
   Statut_etablissement Varchar(50),
   Code_UAI_etablissement Varchar(20),
   etablissement_libelle Varchar(50),
@@ -17,6 +15,7 @@ create table stockage(
   filiere_detaille varchar(50),
   filiere_libelle_abrege varchar(50),
   filiere_libelle_detaille_bis varchar(50),
+  filiere_libelle_tres_detaille varchar(50),
   coordonnees_gps varchar(20),
   capacite int,
   effectif_total_candidats int,
@@ -60,5 +59,5 @@ create table stockage(
   tri varchar(20),
   cod_aff_form int,
   concours_communs_banques_epreuves varchar(50),
-  url_formation varchar(100));
-
+  url_formation varchar(100)
+ );
