@@ -8,14 +8,14 @@ set schema 'parcoursup2';
 ------Tables
 drop Table if EXISTS _academie;
 CREATE TABLE _academie(
-    academie_nom VARCHAR(20) PRIMARY KEY
+    academie_nom VARCHAR(50) PRIMARY KEY
 );
 
 
 drop TABLE if EXISTS _etablissement;
 CREATE TABLE _etablissement(
-    etablissement_code_uai VARCHAR(20) PRIMARY KEY,
-    etablissement_nom VARCHAR(20) NOT NULL,
+    etablissement_code_uai VARCHAR(19) PRIMARY KEY,
+    etablissement_nom VARCHAR(150) NOT NULL,
     etablissement_statut VARCHAR(50) Not NULL
 );
 
@@ -23,10 +23,10 @@ CREATE TABLE _etablissement(
 drop TABLE if EXISTS _filiere;
 CREATE TABLE _filiere(
     filiere_id INT PRIMARY KEY,
-    filiere_libelle VARCHAR(20) NOT NULL,
-    filiere_libelle_tres_abrege VARCHAR(20) NOT NULL,
-    filiere_libelle_abrege VARCHAR(20) not NULL,
-    filiere_libelle_detaille_bis VARCHAR(20) NOT NULL
+    filiere_libelle VARCHAR(400) NOT NULL,
+    filiere_libelle_tres_abrege VARCHAR(30) NOT NULL,
+    filiere_libelle_abrege VARCHAR(150) not NULL,
+    filiere_libelle_detaille_bis VARCHAR(150) NOT NULL
 );
 
 
@@ -39,31 +39,31 @@ CREATE TABLE _region(
 DROP TABLE if EXISTS _departement;
 CREATE TABLE _departement(
     departement_code VARCHAR(20) PRIMARY KEY,
-    departement_nom VARCHAR(20),
-    region_nom VARCHAR(20) REFERENCES _Region(region_nom)
+    departement_nom VARCHAR(40),
+    region_nom VARCHAR(30) REFERENCES _Region(region_nom)
 );
 
 
 DROP TABLE if EXISTS _commune;
 CREATE TABLE _commune(
-    commune_nom VARCHAR(20) PRIMARY KEY,
+    commune_nom VARCHAR(50) PRIMARY KEY,
     departement_code VARCHAR(20) REFERENCES _Departement(departement_code)
 );
 
 
 Drop TABLE if EXISTS _formation;
 CREATE TABLE _formation(
-    cod_aff_form VARCHAR(20) PRIMARY KEY,
-    filiere_libelle_detaille VARCHAR(20),
-    coordonnees_gps VARCHAR(20),
-    list_com VARCHAR(20),
-    concours_communs_banque_epreuve VARCHAR(20),
-    url_formation VARCHAR(20),
+    cod_aff_form int PRIMARY KEY,
+    filiere_libelle_detaille VARCHAR(400),
+    coordonnees_gps VARCHAR(45),
+    list_com VARCHAR(100),
+    concours_communs_banque_epreuve VARCHAR(200),
+    url_formation VARCHAR(200),
     tri VARCHAR(20),
-    academie_nom VARCHAR(20) REFERENCES _Academie(academie_nom),
+    academie_nom VARCHAR(50) REFERENCES _Academie(academie_nom),
     filiere_id INT REFERENCES _Filiere(filiere_id),
     etablissement_code_uai VARCHAR(20) REFERENCES _Etablissement(etablissement_code_uai),
-    commune_nom VARCHAR(20) REFERENCES _Commune(commune_nom)
+    commune_nom VARCHAR(50) REFERENCES _Commune(commune_nom)
 );
 
 drop table if exists _session;
@@ -111,7 +111,7 @@ drop table if exists rang_dernier_appele_selon_regroupement;
 create table rang_dernier_appele_selon_regroupement(
     rang_dernier_appele INT,
     cod_aff_form VARCHAR(20) NOT NULL REFERENCES _Formation(cod_aff_form),
-    libelle_regroupement VARCHAR(30) NOT NULL REFERENCES _Regroupement(libelle_regroupement),
+    libelle_regroupement VARCHAR(100) NOT NULL REFERENCES _Regroupement(libelle_regroupement),
     session_annee INT REFERENCES _Session(session_annee),
     primary key(cod_aff_form, libelle_regroupement, session_annee)
 );
@@ -119,7 +119,7 @@ create table rang_dernier_appele_selon_regroupement(
 drop table if exists effectif_selon_mention;
 create table effectif_selon_mention(
     effectif_admis_neo_bac_selon_mention INT,
-    cod_aff_form VARCHAR(20) NOT NULL REFERENCES _Formation(cod_aff_form),
+    cod_aff_form int NOT NULL REFERENCES _Formation(cod_aff_form),
     libelle_mention VARCHAR(20) NOT NULL REFERENCES _Mention_bac(libelle_mention),
     session_annee INT REFERENCES _Session(session_annee),
     primary key(cod_aff_form, libelle_mention, session_annee)
@@ -255,16 +255,16 @@ Wbimport
 
 
 insert into _academie(academie_nom)
-select academie_nom from stockage;
+select distinct academie_nom from stockage;
 
 insert into _region(region_nom)
-select region_nom from stockage;
+select distinct region_nom from stockage;
 
 insert into _departement(departement_code,departement_nom,region_nom)
-select departement_code,departement_nom,region_nom from stockage;
+select distinct s.etablissement_code_dept,s.dept_nom,s.region_nom from stockage as s;
 
 insert into _commune(commune_nom,departement_code)
-select commune_nom,departement_code from stockage;
+select commune_nom,etablissement_code_dept from stockage;
 
 insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
 select etablissement_code_uai,etablissement_nom,etablissement_statut from stockage;
@@ -276,7 +276,7 @@ insert into _regroupement(libelle_regroupement)
 select libelle_regroupement from stockage;
 
 insert into _session(session_annee)
-select session from stockage;
+select distinct session from stockage;
 
 insert into _mention_bac(libelle_mention)
 select libelle_mention from stockage;
