@@ -274,9 +274,9 @@ select s.filiere_libelle,s.filiere_libelle_tres_abrege,s.filiere_libelle_abrege,
 
 INSERT INTO _regroupement (libelle_regroupement)
 SELECT s.regroupement_1 FROM stockage AS s WHERE s.regroupement_1 IS NOT NULL
-UNION ALL
+UNION
 SELECT s.regroupement_2 FROM stockage AS s WHERE s.regroupement_2 IS NOT NULL
-UNION ALL
+UNION
 SELECT s.regroupement_3 FROM stockage AS s WHERE s.regroupement_3 IS NOT NULL;
 
 insert into _session(session_annee)
