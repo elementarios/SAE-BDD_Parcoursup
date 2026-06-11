@@ -8,7 +8,7 @@ insert into _departement(departement_code,departement_nom,region_nom)
 select distinct s.etablissement_code_dept,s.dept_nom,s.region_nom from stockage as s;
 
 insert into _commune(commune_nom,departement_code)
-select distinct s.commune_nom,s.etablissement_code_dept from stockage as s;
+select distinct s.commune_nom,s.etablissement_code_dept from stockage as s ON CONFLICT (commune_nom) DO NOTHING;
 
 insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
 select s.Code_UAI_etablissement,s.etablissement_libelle,s.Statut_etablissement from stockage as s;
@@ -18,9 +18,9 @@ select s.filiere_libelle,s.filiere_libelle_tres_abrege,s.filiere_libelle_abrege,
 
 INSERT INTO _regroupement (libelle_regroupement)
 SELECT s.regroupement_1 FROM stockage AS s WHERE s.regroupement_1 IS NOT NULL
-UNION ALL
+UNION 
 SELECT s.regroupement_2 FROM stockage AS s WHERE s.regroupement_2 IS NOT NULL
-UNION ALL
+UNION 
 SELECT s.regroupement_3 FROM stockage AS s WHERE s.regroupement_3 IS NOT NULL;
 
 insert into _session(session_annee)
@@ -40,7 +40,7 @@ insert into _type_bac(type_bac) Values
 ('Technologique');
 
 insert into _formation(cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,etablissement_code_uai,commune_nom)
-select s.cod_aff_form,s.filiere_libelle_detaille,s.coordonnees_gps,s.list_com,s.concours_communs_banque_epreuve,s.url_formation,s.tri,s.academie_nom,s.etablissement_code_uai,s.commune_nom from stockage as s;
+select s.cod_aff_form,s.filiere_detaille,s.coordonnees_gps,s.list_com,s.concours_communs_banques_epreuves,s.url_formation,s.tri,s.academie_nom,s.etablissement_code_uai,s.commune_nom from stockage as s;
 
 insert into admissions_generalites(selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee)
 select s.selectivite,s.capacite,s.effectif_total_candidats,s.effectif_total_candidates,s.cod_aff_form,s.session from stockage as s;
