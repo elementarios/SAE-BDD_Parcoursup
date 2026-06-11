@@ -96,7 +96,7 @@ create table admissions_generalites(
     cod_aff_form VARCHAR NOT NULL REFERENCES _Formation(cod_aff_form),
     session_annee INT REFERENCES _Session(session_annee),
     primary key(cod_aff_form, session_annee)
-);-- comen hair
+);
 
 drop table if exists admissions_selon_type_neo_bac;
 create table admissions_selon_type_neo_bac(
