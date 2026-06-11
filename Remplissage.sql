@@ -31,7 +31,7 @@ insert into _mention_bac(libelle_mention) Values
     ('Assez bien'),
     ('Bien'),
     ('Très bien'),
-    ('Félicitations du jury')
+    ('Félicitations du jury'),
     ('Sans Info');
 
 insert into _type_bac(type_bac) Values
@@ -47,11 +47,11 @@ select s.selectivite,s.capacite,s.effectif_total_candidats,s.effectif_total_cand
 
 
 insert into admissions_selon_type_neo_bac(effectif_candidat_neo_bac_classes,cod_aff_form,session_annee,type_bac)
-select s.effectif_admis_neo_bac_avec_mention_type_bac_general,s.cod_aff_form,s.session_annee,'General' from stockage as s 
+select s.effectif_admis_neo_bac_avec_mention_type_bac_general,s.cod_aff_form,s.session,'General' from stockage as s 
 Union all
-select s.effectif_admis_neo_bac_avec_mention_type_bac_techno,s.cod_aff_form,s.session_annee,'Professionel' from stockage as s 
+select s.effectif_admis_neo_bac_avec_mention_type_bac_techno,s.cod_aff_form,s.session,'Professionel' from stockage as s 
 Union all
-select s.effectif_admis_neo_bac_avec_mention_type_bac_pro,s.cod_aff_form,s.session_annee,'Technologique' from stockage as s ;
+select s.effectif_admis_neo_bac_avec_mention_type_bac_pro,s.cod_aff_form,s.session,'Technologique' from stockage as s ;
 
 
 
