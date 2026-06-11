@@ -22,7 +22,7 @@ CREATE TABLE _etablissement(
 
 drop TABLE if EXISTS _filiere;
 CREATE TABLE _filiere(
-    filiere_id INT PRIMARY KEY,
+    filiere_id SERIAL PRIMARY KEY,
     filiere_libelle VARCHAR(400) NOT NULL,
     filiere_libelle_tres_abrege VARCHAR(30) NOT NULL,
     filiere_libelle_abrege VARCHAR(150) not NULL,
