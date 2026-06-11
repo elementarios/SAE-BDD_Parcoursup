@@ -14,7 +14,7 @@ CREATE TABLE _academie(
 
 drop TABLE if EXISTS _etablissement;
 CREATE TABLE _etablissement(
-    etablissement_code_uai VARCHAR(20) PRIMARY KEY,
+    etablissement_code_uai VARCHAR(50) PRIMARY KEY,
     etablissement_nom VARCHAR(150) NOT NULL,
     etablissement_statut VARCHAR(50) Not NULL
 );
@@ -38,7 +38,7 @@ CREATE TABLE _region(
 
 DROP TABLE if EXISTS _departement;
 CREATE TABLE _departement(
-    departement_code VARCHAR(20) PRIMARY KEY,
+    departement_code VARCHAR(19) PRIMARY KEY,
     departement_nom VARCHAR(40),
     region_nom VARCHAR(30) REFERENCES _Region(region_nom)
 );
@@ -59,7 +59,7 @@ CREATE TABLE _formation(
     list_com VARCHAR(100),
     concours_communs_banque_epreuve VARCHAR(200),
     url_formation VARCHAR(200),
-    tri VARCHAR(20),
+    tri VARCHAR(50),
     academie_nom VARCHAR(50) REFERENCES _Academie(academie_nom),
     filiere_id INT REFERENCES _Filiere(filiere_id),
     etablissement_code_uai VARCHAR(15) REFERENCES _Etablissement(etablissement_code_uai),
@@ -78,7 +78,7 @@ CREATE TABLE _regroupement(
 );
 drop table if exists _type_bac;
 CREATE TABLE _type_bac(
-    type_bac VARCHAR(20) NOT NULL,
+    type_bac VARCHAR(17) NOT NULL,
     primary key(type_bac)
 );
 drop table if exists _mention_bac;
@@ -103,7 +103,7 @@ create table admissions_selon_type_neo_bac(
     effectif_candidat_neo_bac_classes INT,
     cod_aff_form INT NOT NULL REFERENCES _Formation(cod_aff_form),
     session_annee INT REFERENCES _Session(session_annee),
-    type_bac VARCHAR(20) NOT NULL REFERENCES _Type_bac(type_bac),
+    type_bac VARCHAR(16) NOT NULL REFERENCES _Type_bac(type_bac),
     primary key(cod_aff_form, session_annee, type_bac)
 );
 
@@ -120,7 +120,7 @@ drop table if exists effectif_selon_mention;
 create table effectif_selon_mention(
     effectif_admis_neo_bac_selon_mention INT,
     cod_aff_form int NOT NULL REFERENCES _Formation(cod_aff_form),
-    libelle_mention VARCHAR(20) NOT NULL REFERENCES _Mention_bac(libelle_mention),
+    libelle_mention VARCHAR(50) NOT NULL REFERENCES _Mention_bac(libelle_mention),
     session_annee INT REFERENCES _Session(session_annee),
     primary key(cod_aff_form, libelle_mention, session_annee)
 );
@@ -264,7 +264,7 @@ insert into _departement(departement_code,departement_nom,region_nom)
 select distinct s.etablissement_code_dept,s.dept_nom,s.region_nom from stockage as s;
 
 insert into _commune(commune_nom,departement_code)
-select distinct s.commune_nom,s.etablissement_code_dept from stockage as s ON CONFLICT (commune_nom) DO NOTHING;
+select distinct s.commune_nom,s.etablissement_code_dept from stockage as s ON CONFLICT DO NOTHING;
 
 insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
 select distinct s.Code_UAI_etablissement,s.etablissement_libelle,s.Statut_etablissement from stockage as s;
@@ -287,7 +287,8 @@ insert into _mention_bac(libelle_mention) Values
     ('Assez bien'),
     ('Bien'),
     ('Très bien'),
-    ('Félicitations du jury');
+    ('Félicitations du jury'),
+    ('Sans Info');
 
 insert into _type_bac(type_bac) Values
 ('Professionel'),
@@ -295,18 +296,18 @@ insert into _type_bac(type_bac) Values
 ('Technologique');
 
 insert into _formation(cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,etablissement_code_uai,commune_nom)
-select distinct s.cod_aff_form,s.filiere_libelle_detaille,s.coordonnees_gps,s.list_com,s.concours_communs_banque_epreuve,s.url_formation,s.tri,s.academie_nom,s.etablissement_code_uai,s.commune_nom from stockage as s;
+select s.cod_aff_form,s.filiere_detaille,s.coordonnees_gps,s.list_com,s.concours_communs_banques_epreuves,s.url_formation,s.tri,s.academie_nom,s.Code_UAI_etablissement,s.commune_nom from stockage as s;
 
 insert into admissions_generalites(selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee)
 select s.selectivite,s.capacite,s.effectif_total_candidats,s.effectif_total_candidates,s.cod_aff_form,s.session from stockage as s;
 
 
 insert into admissions_selon_type_neo_bac(effectif_candidat_neo_bac_classes,cod_aff_form,session_annee,type_bac)
-select s.effectif_admis_neo_bac_avec_mention_type_bac_general,s.cod_aff_form,s.session_annee,'General' from stockage as s 
+select s.effectif_admis_neo_bac_avec_mention_type_bac_general,s.cod_aff_form,s.session,'General' from stockage as s 
 Union all
-select s.effectif_admis_neo_bac_avec_mention_type_bac_techno,s.cod_aff_form,s.session_annee,'Professionel' from stockage as s 
+select s.effectif_admis_neo_bac_avec_mention_type_bac_techno,s.cod_aff_form,s.session,'Professionel' from stockage as s 
 Union all
-select s.effectif_admis_neo_bac_avec_mention_type_bac_pro,s.cod_aff_form,s.session_annee,'Technologique' from stockage as s ;
+select s.effectif_admis_neo_bac_avec_mention_type_bac_pro,s.cod_aff_form,s.session,'Technologique' from stockage as s ;
 
 
 
@@ -324,8 +325,8 @@ union all
 select s.effectif_admis_neo_bac_selon_mention_type_mention_tres_bien_fel,s.cod_aff_form,'Félicitations du jury',s.session from stockage as s;
 
 insert into rang_dernier_appele_selon_regroupement(rang_dernier_appele,cod_aff_form,libelle_regroupement,session_annee)
-select s.rang_dernier_appele_groupe1,s.cod_aff_form,s.regroupement_1,s.session from stockage as s
+select s.rang_dernier_appele_groupe1,s.cod_aff_form,s.regroupement_1,s.session from stockage as s WHERE s.rang_dernier_appele_groupe1 is not null and s.regroupement_1 is not null
 union all
-select s.rang_dernier_appele_groupe2,s.cod_aff_form,s.regroupement_2,s.session from stockage as s
+select s.rang_dernier_appele_groupe2,s.cod_aff_form,s.regroupement_2,s.session from stockage as s WHERE s.rang_dernier_appele_groupe2 is not null and s.regroupement_2 is not null
 union all
-select s.rang_dernier_appele_groupe3,s.cod_aff_form,s.regroupement_3,s.session from stockage as s;
+select s.rang_dernier_appele_groupe3,s.cod_aff_form,s.regroupement_3,s.session from stockage as s WHERE s.rang_dernier_appele_groupe3 is not null and s.regroupement_3 is not null;
