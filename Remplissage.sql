@@ -1,35 +1,45 @@
 insert into _academie(academie_nom)
-select academie_nom from stockage;
+select distinct academie_nom from stockage;
 
 insert into _region(region_nom)
-select region_nom from stockage;
+select distinct region_nom from stockage;
 
 insert into _departement(departement_code,departement_nom,region_nom)
-select departement_code,departement_nom,region_nom from stockage;
+select distinct s.etablissement_code_dept,s.dept_nom,s.region_nom from stockage as s;
 
 insert into _commune(commune_nom,departement_code)
-select commune_nom,departement_code from stockage;
+select distinct s.commune_nom,s.etablissement_code_dept from stockage as s;
 
 insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
-select etablissement_code_uai,etablissement_nom,etablissement_statut from stockage;
+select s.Code_UAI_etablissement,s.etablissement_libelle,s.Statut_etablissement from stockage as s;
 
-insert into _filiere(filiere_id,filiere_libelle,filiere_libelle_tres_abrege,filiere_libelle_abrege,filiere_libelle_detaille_bis)
-select filiere_id,filiere_libelle,filiere_libelle_tres_abrege,filiere_libelle_abrege,filiere_libelle_detaille_bis from stockage;
+insert into _filiere(filiere_libelle,filiere_libelle_tres_abrege,filiere_libelle_abrege,filiere_libelle_detaille_bis)
+select s.filiere_libelle,s.filiere_libelle_tres_abrege,s.filiere_libelle_abrege,s.filiere_libelle_detaille_bis from stockage as s;
 
-insert into _regroupement(libelle_regroupement)
-select libelle_regroupement from stockage;
+INSERT INTO _regroupement (libelle_regroupement)
+SELECT s.regroupement_1 FROM stockage AS s WHERE s.regroupement_1 IS NOT NULL
+UNION ALL
+SELECT s.regroupement_2 FROM stockage AS s WHERE s.regroupement_2 IS NOT NULL
+UNION ALL
+SELECT s.regroupement_3 FROM stockage AS s WHERE s.regroupement_3 IS NOT NULL;
 
 insert into _session(session_annee)
-select session from stockage;
+select distinct session from stockage;
 
-insert into _mention_bac(libelle_mention)
-select libelle_mention from stockage;
+insert into _mention_bac(libelle_mention) Values
+ ('Sans mention'),
+    ('Assez bien'),
+    ('Bien'),
+    ('Très bien'),
+    ('Félicitations du jury');
 
-insert into _type_bac(type_bac)
-select type_bac from stockage;
+insert into _type_bac(type_bac) Values
+('Professionel'),
+('General'),
+('Technologique');
 
-insert into _formation(cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,filiere_id,etablissement_code_uai,commune_nom)
-select cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,filiere_id,etablissement_code_uai,commune_nom from stockage;
+insert into _formation(cod_aff_form,filiere_libelle_detaille,coordonnees_gps,list_com,concours_communs_banque_epreuve,url_formation,tri,academie_nom,etablissement_code_uai,commune_nom)
+select s.cod_aff_form,s.filiere_libelle_detaille,s.coordonnees_gps,s.list_com,s.concours_communs_banque_epreuve,s.url_formation,s.tri,s.academie_nom,s.etablissement_code_uai,s.commune_nom from stockage as s;
 
 insert into admissions_generalites(selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee)
 select selectivite,capacite,effectif_total_candidats,effectif_total_candidates,cod_aff_form,session_annee from stockage;
