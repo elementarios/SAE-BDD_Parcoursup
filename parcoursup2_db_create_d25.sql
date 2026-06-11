@@ -264,7 +264,7 @@ insert into _departement(departement_code,departement_nom,region_nom)
 select distinct s.etablissement_code_dept,s.dept_nom,s.region_nom from stockage as s;
 
 insert into _commune(commune_nom,departement_code)
-select distinct s.commune_nom,s.etablissement_code_dept from stockage as s;
+select distinct s.commune_nom,s.etablissement_code_dept from stockage as s ON CONFLICT (commune_nom) DO NOTHING;
 
 insert into _etablissement(etablissement_code_uai,etablissement_nom,etablissement_statut)
 select s.Code_UAI_etablissement,s.etablissement_libelle,s.Statut_etablissement from stockage as s;
