@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def extraction(nomF : str) -> np.ndarray:
-    """_summary_
+    """extrait les données pour pouvoir les utiliser
 
     Args:
         nomF (String): le nom du fichier CSV depuis lequel en extrait les informations
@@ -18,7 +18,7 @@ def extraction(nomF : str) -> np.ndarray:
 
 
 def taille(data : np.ndarray)-> int :
-    """_summary_
+    """calcule le nombre  de ligne 
 
     Args:
         data (np.ndarray): les données
@@ -27,3 +27,19 @@ def taille(data : np.ndarray)-> int :
         int: le nombres de ligne que contiennent les données
     """
     return data[:,0].size
+
+
+def matriceX_1(data : np.ndarray,numColonne : int) -> np.ndarray:
+    """crée une matrice exploitable pour la suite
+
+    Args:
+        data (np.ndarray): les données
+        numColonne (int): le numéro de la colonne souhaité
+
+    Returns:
+        np.ndarray: la matrice X qui peut etre exploité par la suite
+    """
+    X=np.zeros([taille(data),2])
+    X=X+1
+    X[:,1]=data[numColonne]
+    return X
