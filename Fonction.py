@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 
+################################################              EXTRACTION             #############################################################
 def extractionNum(nomF : str) -> np.ndarray:
     """extrait les données pour pouvoir les utiliser
 
@@ -35,19 +36,7 @@ def extractionNom(nomF : str) ->np.ndarray:
 
 
 
-
-
-def taille(data : np.ndarray)-> int :
-    """calcule le nombre  de ligne 
-
-    Args:
-        data (np.ndarray): les données
-
-    Returns:
-        int: le nombres de ligne que contiennent les données
-    """
-    return data[:,0].size
-
+################################################              CREATION MATRICE             #############################################################
 
 def matriceY(data : np.ndarray , numColonne : int)-> np.ndarray:
     """crée une matrice exploitable pour la suite
@@ -184,6 +173,28 @@ def matriceX_6(data : np.ndarray,numColonne1 : int,numColonne2 : int,numColonne3
     X[:,6]=data[numColonne6]
     return X
 
+
+
+
+
+
+################################################              CALCUL            #############################################################
+
+
+
+def taille(data : np.ndarray)-> int :
+    """calcule le nombre  de ligne 
+
+    Args:
+        data (np.ndarray): les données
+
+    Returns:
+        int: le nombres de ligne que contiennent les données
+    """
+    return data[:,0].size
+
+
+
 def calcul_regression_mutliple(X : np.ndarray,Y : np.ndarray) -> np.ndarray:
     """crée une matrice exploitable pour la suite
 
@@ -238,3 +249,15 @@ def Erreur_Moyenne(Predit : np.ndarray , Y : np.ndarray)-> float:
         
 
 
+def calculPourcentage(numerateur : np.ndarray,denominateur : np.ndarray) -> np.ndarray:
+    """Fait un pourcentage de deux valeur 
+
+    Args:
+        numerateur (np.ndarray): la plus petite partie
+        denominateur (np.ndarray): la plus grosse partie
+
+    Returns:
+        np.ndarray: retourne le pourcentage pour chaque element du nd.array
+    """
+
+    return numerateur/denominateur
