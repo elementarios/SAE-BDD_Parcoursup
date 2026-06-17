@@ -17,6 +17,25 @@ def extractionNum(nomF : str) -> np.ndarray:
     arr = np.array(df_num)
     return arr
 
+def extractionNom(nomF : str) ->np.ndarray:
+    """extrait les nom pour pouvoir les utiliser
+
+    Args:
+        nomF (str): le nom du fichier CSV depuis lequel en extrait les informations
+
+    Returns:
+        np.ndarray: les noms des formations sous forme de ndarray exploitable
+
+    """
+    lecture = pd.read_csv(nomF,sep=';')
+    nom = lecture.to_numpy()
+    return np.array(nom[:,0])
+
+
+
+
+
+
 
 def taille(data : np.ndarray)-> int :
     """calcule le nombre  de ligne 
