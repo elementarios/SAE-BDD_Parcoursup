@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-def extraction(nomF : str) -> np.ndarray:
+def extractionNum(nomF : str) -> np.ndarray:
     """extrait les données pour pouvoir les utiliser
 
     Args:
@@ -10,11 +10,12 @@ def extraction(nomF : str) -> np.ndarray:
 
     Returns:
         np.ndarray: les données numériques sous forme de ndarray exploitable
+
     """
-    lecturePure =  pd.read_csv("ParcoursupLannion-Reduit.csv")
+    lecturePure =  pd.read_csv(nomF,sep=";")
     df_num = lecturePure._get_numeric_data()
-    arr_lannion = np.array(df_num)
-    return arr_lannion
+    arr = np.array(df_num)
+    return arr
 
 
 def taille(data : np.ndarray)-> int :
