@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 
 
 ################################################              EXTRACTION             #############################################################
@@ -225,13 +226,13 @@ def calcul_predit(X : np.ndarray,A : np.ndarray) -> np.ndarray:
     tailleA = A.size
     for i in range(tailleX):
         resultat = 0
-        for j in range(tailleA-1):
-            resultat = X[i,j+1]*A[j]
-        resultat+=A[tailleA-1]
+        for j in range(1,tailleA):
+            resultat = X[i,j]*A[j]
+        resultat+=A[0]
         Predit = np.append(Predit,resultat)
     return Predit
 
-def Erreur_Moyenne(Predit : np.ndarray , Y : np.ndarray)-> float:
+def Erreur(Predit : np.ndarray , Y : np.ndarray)-> np.ndarray:
     """crée une matrice exploitable pour la suite
 
     Args:
@@ -239,14 +240,13 @@ def Erreur_Moyenne(Predit : np.ndarray , Y : np.ndarray)-> float:
         Y (np.ndarray): la matrice de la variable endogene
 
     Returns:
-        float: l'erreur moyenne
+        np.ndarray: l'erreur moyenne
     """
-    S = 0.0
     N = Y.size
+    erreur = np.ndarray()
     for i in range(N):
-        S+= (Predit[i]-Y[i])**2
-    return S/N
-        
+        erreur = np.append(erreur,((Predit[i]-Y[i])**2))
+    return erreur
 
 
 def calculPourcentage(numerateur : np.ndarray,denominateur : np.ndarray) -> np.ndarray:
@@ -261,3 +261,52 @@ def calculPourcentage(numerateur : np.ndarray,denominateur : np.ndarray) -> np.n
     """
 
     return numerateur/denominateur
+
+def moyenne(Y : np.ndarray) -> float:
+    """retourne la moyenne d'une matrice 
+
+    Args:
+        Y (np.ndarray): la matrice
+        
+
+    Returns:
+        float : moyenne
+    """
+    s = 0
+    n = Y.size
+    for i in range(n):
+        s += Y[n]
+    return s/n
+
+def variance(Y:np.ndarray) -> float:
+    """retourne la variance d'une matrice 
+
+    Args:
+        Y (np.ndarray): la matrice
+        
+
+    Returns:
+        float : la variance
+    """
+    s=0
+    n = Y.size
+    m = moyenne(Y)
+    for i in range(n):
+        s+= (Y[i] - m)**2
+    return s
+
+def coefficient(X:np.ndarray , Y: np.ndarray) -> float:
+    """Fait le cofficient pour les deux matrice
+
+    Args:
+        X (np.ndarray): variables explicatives
+        denominateur (np.ndarray): variables endogene
+
+    Returns:
+        float : coefficient
+    """
+    A = calcul_regression_mutliple(X,Y)
+    predit = calcul_predit(X,A)
+    erreur = Erreur_Moyenne(predit,Y)
+
+    return math.sqrt(1-erreur/variance(Y))
