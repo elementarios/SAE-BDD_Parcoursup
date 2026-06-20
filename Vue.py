@@ -2,7 +2,7 @@ import pandas as pd
 import Fonctions as f
 # --- 1. Chargement du fichier source --------------------------------------
 
-df = f.extraire("fr-esr-parcoursup_2022.csv")
+df = pd.read_csv("fr-esr-parcoursup_2022.csv", sep=";")
 
 # --- 2. Sélection des colonnes -------------------
 
@@ -60,7 +60,7 @@ vue_capacite_mentions = vue_capacite_mentions.sort_values(
 
 #
 
-nomFSortie = "vue_capacite_mentions.csv"
+nomFSortie = "vue.csv"
 
 vue_capacite_mentions.to_csv(nomFSortie, sep=";", index=False)
 
