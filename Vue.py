@@ -1,5 +1,4 @@
 import pandas as pd
-import Fonctions as f
 # --- 1. Chargement du fichier source --------------------------------------
 
 df = pd.read_csv("fr-esr-parcoursup_2022.csv", sep=";")
@@ -30,11 +29,17 @@ colonnes_mentions_pourcentages = list(df.columns[82:88])
 # 86 -> % d'admis néo bacheliers avec mention Très Bien au bac
 # 87 -> % d'admis néo bacheliers avec mention Très Bien avec félicitations au bac
 
+colonnes_admis = list(df.columns[47])
+
+colonnes_candidats = list(df.columns[19])
+
 toutes_colonnes = (
     colonnes_identification
     + colonne_capacite
     + colonnes_mentions_effectifs
     + colonnes_mentions_pourcentages
+    + colonnes_admis
+    + colonnes_candidats
 )
 
 # --- 3. Construction de la vue ---------

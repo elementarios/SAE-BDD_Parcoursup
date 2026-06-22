@@ -7,7 +7,7 @@ import math
 def extractionNum(nomF : str) -> np.ndarray:
     """extrait les données pour pouvoir les utiliser
 
-    Args:
+    Args:o
         nomF (String): le nom du fichier CSV depuis lequel en extrait les informations
 
     Returns:
